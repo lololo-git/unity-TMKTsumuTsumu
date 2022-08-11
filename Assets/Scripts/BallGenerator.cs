@@ -8,11 +8,6 @@ public class BallGenerator : MonoBehaviour
 
     [SerializeField] Sprite[] ballSprites = default;
 
-    private void Start()
-    {
-        StartCoroutine(Spawns(40));
-    }
-
 
     public IEnumerator Spawns(int count)
     {
