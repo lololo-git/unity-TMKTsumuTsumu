@@ -1,13 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallGenerator : MonoBehaviour
 {
-    [SerializeField] GameObject ballPrefab = default;
-
-    [SerializeField] Sprite[] ballSprites = default;
-
+    [SerializeField] private GameObject ballPrefab = default;
+    [SerializeField] private Sprite[] ballSprites = default;
 
     public IEnumerator Spawns(int count)
     {
@@ -23,6 +20,4 @@ public class BallGenerator : MonoBehaviour
             yield return new WaitForSeconds(0.04f);
         }
     }
-
-
 }

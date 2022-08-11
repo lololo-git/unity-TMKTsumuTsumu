@@ -1,20 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSystem : MonoBehaviour
 {
+    [SerializeField] private BallGenerator ballGenerator = default;
+    private bool isDragging;
+    [SerializeField] private List<Ball> removeBalls = new List<Ball>();
+    private Ball currentDraggingBall;
 
-    [SerializeField] BallGenerator ballGenerator = default;
-    bool isDragging;
-    [SerializeField] List<Ball> removeBalls = new List<Ball>();
-
-    void Start()
+    private void Start()
     {
         StartCoroutine(ballGenerator.Spawns(40));
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -30,7 +29,7 @@ public class GameSystem : MonoBehaviour
         }
     }
 
-    void OnDragBegin()
+    private void OnDragBegin()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
@@ -45,7 +44,7 @@ public class GameSystem : MonoBehaviour
         }
     }
 
-    void OnDragging()
+    private void OnDragging()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
@@ -55,24 +54,38 @@ public class GameSystem : MonoBehaviour
             if (!ball)
                 return;
 
-            AddRemoveBall(ball);
+            if (ball.id == currentDraggingBall.id)
+            {
+                float distance = Vector2.Distance(ball.transform.position,
+                                                  currentDraggingBall.transform.position);
+                if (distance < 1.5)
+                {
+                    AddRemoveBall(ball);
+                }
+            }
         }
     }
-    void OnDragEnd()
+
+    private void OnDragEnd()
     {
         int removeCount = removeBalls.Count;
-        for (int i = 0; i < removeCount; i++)
+        if (removeCount >= 3)
         {
-            Destroy(removeBalls[i].gameObject);
+            for (int i = 0; i < removeCount; i++)
+            {
+                Destroy(removeBalls[i].gameObject);
+            }
         }
         removeBalls.Clear();
 
         isDragging = false;
     }
 
-    void AddRemoveBall(Ball ball)
+    private void AddRemoveBall(Ball ball)
     {
-        if (removeBalls.Contains(ball) == false) {
+        currentDraggingBall = ball;
+        if (removeBalls.Contains(ball) == false)
+        {
             removeBalls.Add(ball);
         }
     }
