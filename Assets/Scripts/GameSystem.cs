@@ -75,6 +75,7 @@ public class GameSystem : MonoBehaviour
             {
                 Destroy(removeBalls[i].gameObject);
             }
+            StartCoroutine(ballGenerator.Spawns(removeCount));
         }
         removeBalls.Clear();
 
