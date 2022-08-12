@@ -5,23 +5,17 @@ using UnityEngine.UI;
 public class GameSystem : MonoBehaviour
 {
     [SerializeField] private BallGenerator ballGenerator = default;
-    private bool isDragging;
     [SerializeField] private List<Ball> removeBalls = new List<Ball>();
+    [SerializeField] private Text scoreText = default;
+
     private Ball currentDraggingBall;
-    int score;
-    [SerializeField] Text scoreText = default;
+    private bool isDragging;
+    private int score;
 
     private void Start()
     {
         score = 0;
-        AddScore(0);
         StartCoroutine(ballGenerator.Spawns(50));
-    }
-
-    void AddScore(int point)
-    {
-        score += point;
-        scoreText.text = score.ToString();
     }
 
     private void Update()
@@ -42,14 +36,9 @@ public class GameSystem : MonoBehaviour
 
     private void OnDragBegin()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-        if (hit)
+        Ball ball = GetPointededBall();
+        if (ball)
         {
-            Ball ball = hit.collider.GetComponent<Ball>();
-            if (!ball)
-                return;
-
             AddRemoveBall(ball);
             isDragging = true;
         }
@@ -57,26 +46,18 @@ public class GameSystem : MonoBehaviour
 
     private void OnDragging()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-        if (hit)
+        Ball ball = GetPointededBall();
+        if (ball && ball.id == currentDraggingBall.id)
         {
-            Ball ball = hit.collider.GetComponent<Ball>();
-            if (!ball)
-                return;
-
-            if (ball.id == currentDraggingBall.id)
+            float distance = Vector2.Distance(
+                ball.transform.position,
+                currentDraggingBall.transform.position);
+            if (distance < 1.5)
             {
-                float distance = Vector2.Distance(ball.transform.position,
-                                                  currentDraggingBall.transform.position);
-                if (distance < 1.5)
-                {
-                    AddRemoveBall(ball);
-                }
+                AddRemoveBall(ball);
             }
         }
     }
-
     private void OnDragEnd()
     {
         int removeCount = removeBalls.Count;
@@ -91,11 +72,27 @@ public class GameSystem : MonoBehaviour
         }
         for (int i = 0; i < removeCount; i++)
         {
-            removeBalls[i].transform.localScale = Vector3.one;
+            removeBalls[i].Unactivate();
         }
         removeBalls.Clear();
 
         isDragging = false;
+    }
+
+    private void AddScore(int point)
+    {
+        score += point;
+        scoreText.text = score.ToString();
+    }
+
+    private Ball GetPointededBall()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+        if (!hit)
+            return null;
+        Ball ball = hit.collider.GetComponent<Ball>();
+        return ball ? ball : null;
     }
 
     private void AddRemoveBall(Ball ball)
@@ -104,7 +101,7 @@ public class GameSystem : MonoBehaviour
         if (removeBalls.Contains(ball) == false)
         {
             removeBalls.Add(ball);
-            ball.transform.localScale = Vector3.one * 1.4f;
+            ball.Activate();
         }
     }
 }
