@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameSystem : MonoBehaviour
 {
@@ -7,10 +8,20 @@ public class GameSystem : MonoBehaviour
     private bool isDragging;
     [SerializeField] private List<Ball> removeBalls = new List<Ball>();
     private Ball currentDraggingBall;
+    int score;
+    [SerializeField] Text scoreText = default;
 
     private void Start()
     {
+        score = 0;
+        AddScore(0);
         StartCoroutine(ballGenerator.Spawns(40));
+    }
+
+    void AddScore(int point)
+    {
+        score += point;
+        scoreText.text = score.ToString();
     }
 
     private void Update()
@@ -76,6 +87,7 @@ public class GameSystem : MonoBehaviour
                 Destroy(removeBalls[i].gameObject);
             }
             StartCoroutine(ballGenerator.Spawns(removeCount));
+            AddScore(removeCount * 100);
         }
         removeBalls.Clear();
 
