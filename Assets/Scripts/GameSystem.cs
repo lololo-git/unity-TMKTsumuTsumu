@@ -15,7 +15,7 @@ public class GameSystem : MonoBehaviour
     {
         score = 0;
         AddScore(0);
-        StartCoroutine(ballGenerator.Spawns(40));
+        StartCoroutine(ballGenerator.Spawns(50));
     }
 
     void AddScore(int point)
@@ -89,6 +89,10 @@ public class GameSystem : MonoBehaviour
             StartCoroutine(ballGenerator.Spawns(removeCount));
             AddScore(removeCount * 100);
         }
+        for (int i = 0; i < removeCount; i++)
+        {
+            removeBalls[i].transform.localScale = Vector3.one;
+        }
         removeBalls.Clear();
 
         isDragging = false;
@@ -100,6 +104,7 @@ public class GameSystem : MonoBehaviour
         if (removeBalls.Contains(ball) == false)
         {
             removeBalls.Add(ball);
+            ball.transform.localScale = Vector3.one * 1.4f;
         }
     }
 }
