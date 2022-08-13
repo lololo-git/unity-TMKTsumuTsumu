@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d767bf3570b484b478142c52661a9bee, type: 3}
   m_Name: ParamsSO
   m_EditorClassIdentifier: 
-  initBallCount: 0
+  initBallCount: 40
+  scorePoint: 100
+  ballDistance: 3
+  defaultBallScale: 2
+  activeBallScale: 2.8
