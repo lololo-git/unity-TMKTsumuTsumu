@@ -15,7 +15,7 @@ public class GameSystem : MonoBehaviour
     private void Start()
     {
         score = 0;
-        StartCoroutine(ballGenerator.Spawns(50));
+        StartCoroutine(ballGenerator.Spawns(ParamsSO.Entity.initBallCount));
     }
 
     private void Update()
@@ -52,7 +52,7 @@ public class GameSystem : MonoBehaviour
             float distance = Vector2.Distance(
                 ball.transform.position,
                 currentDraggingBall.transform.position);
-            if (distance < 1.5)
+            if (distance < ParamsSO.Entity.ballDistance)
             {
                 AddRemoveBall(ball);
             }
@@ -68,7 +68,7 @@ public class GameSystem : MonoBehaviour
                 Destroy(removeBalls[i].gameObject);
             }
             StartCoroutine(ballGenerator.Spawns(removeCount));
-            AddScore(removeCount * 100);
+            AddScore(removeCount * ParamsSO.Entity.scorePoint);
         }
         for (int i = 0; i < removeCount; i++)
         {

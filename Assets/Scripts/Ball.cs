@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public const float BALL_ACTIVE_SCALE = 1.4f;
-
     public int id;
 
     // Start is called before the first frame update
@@ -18,11 +16,11 @@ public class Ball : MonoBehaviour
 
     public void Activate()
     {
-        this.transform.localScale = Vector3.one * BALL_ACTIVE_SCALE;
+        this.transform.localScale = Vector3.one * ParamsSO.Entity.activeBallScale;
     }
 
     public void Unactivate()
     {
-        this.transform.localScale = Vector3.one * 1.0f;
+        this.transform.localScale = Vector3.one;
     }
 }
