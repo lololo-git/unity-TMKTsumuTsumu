@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
@@ -21,6 +21,6 @@ public class Ball : MonoBehaviour
 
     public void Unactivate()
     {
-        this.transform.localScale = Vector3.one;
+        this.transform.localScale = Vector3.one * ParamsSO.Entity.defaultBallScale;
     }
 }

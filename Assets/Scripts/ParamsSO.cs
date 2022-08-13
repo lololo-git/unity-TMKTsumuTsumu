@@ -11,6 +11,8 @@ public class ParamsSO : ScriptableObject
     public int scorePoint;
     [Header("ボールの判定距離")]
     public float ballDistance;
+    [Header("ボールの大きさ")]
+    public float defaultBallScale;
     [Header("ボールクリック時の大きさ")]
     public float activeBallScale;
 
