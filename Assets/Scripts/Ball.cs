@@ -18,10 +18,12 @@ public class Ball : MonoBehaviour
     public void Activate()
     {
         this.transform.localScale = Vector3.one * ParamsSO.Entity.activeBallScale;
+        this.GetComponent<SpriteRenderer>().color = Color.yellow;
     }
 
     public void Unactivate()
     {
         this.transform.localScale = Vector3.one * ParamsSO.Entity.defaultBallScale;
+        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 }
