@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,8 +40,15 @@ public class GameSystem : MonoBehaviour
         Ball ball = GetPointededBall();
         if (ball)
         {
-            AddRemoveBall(ball);
-            isDragging = true;
+            if (ball.isBomb())
+            {
+                ExplodeBomb(ball);
+            }
+            else
+            {
+                AddRemoveBall(ball);
+                isDragging = true;
+            }
         }
     }
 
@@ -58,17 +66,13 @@ public class GameSystem : MonoBehaviour
             }
         }
     }
+
     private void OnDragEnd()
     {
         int removeCount = removeBalls.Count;
         if (removeCount >= 3)
         {
-            for (int i = 0; i < removeCount; i++)
-            {
-                Destroy(removeBalls[i].gameObject);
-            }
-            StartCoroutine(ballGenerator.Spawns(removeCount));
-            AddScore(removeCount * ParamsSO.Entity.scorePoint);
+            ExplodeBalls(removeBalls);
         }
         for (int i = 0; i < removeCount; i++)
         {
@@ -103,5 +107,34 @@ public class GameSystem : MonoBehaviour
             removeBalls.Add(ball);
             ball.Activate();
         }
+    }
+
+    private void ExplodeBalls(IEnumerable<Ball> balls)
+    {
+        int count = default;
+        foreach (Ball ball in balls)
+        {
+            ball.Explode();
+            count++;
+        }
+        StartCoroutine(ballGenerator.Spawns(count));
+        AddScore(count * ParamsSO.Entity.scorePoint);
+    }
+
+    private void ExplodeBomb(Ball bomb)
+    {
+        Collider2D[] hitObj = Physics2D.OverlapCircleAll(
+            bomb.transform.position, ParamsSO.Entity.BombExplosionRadius);
+
+        List<Ball> explosionList = new List<Ball>();
+        for (int i = 0; i < hitObj.Length; i++)
+        {
+            Ball ball = hitObj[i].GetComponent<Ball>();
+            if (ball)
+            {
+                explosionList.Add(ball);
+            }
+        }
+        ExplodeBalls(explosionList);
     }
 }

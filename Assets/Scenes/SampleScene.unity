@@ -684,6 +684,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b6be9af5dc40ed34eb02b607b6f52ba5, type: 3}
   - {fileID: 21300000, guid: e39630abbfbdbfd44b178a76c9d224d6, type: 3}
   - {fileID: 21300000, guid: 11e96decadef35a409901896f83b8d07, type: 3}
+  bombSprite: {fileID: 21300000, guid: fb1568d0132764449a0010ce8b512280, type: 3}
 --- !u!4 &1994870071
 Transform:
   m_ObjectHideFlags: 0
