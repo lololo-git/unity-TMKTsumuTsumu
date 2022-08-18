@@ -18,6 +18,9 @@ public class ParamsSO : ScriptableObject
     [Header("ボールクリック時の大きさ")]
     public float activeBallScale;
 
+    [Header("スコアの残る時間")]
+    public float pointEffectRemain;
+
     [Header("爆発の残る時間")]
     public float explosionRemain;
 

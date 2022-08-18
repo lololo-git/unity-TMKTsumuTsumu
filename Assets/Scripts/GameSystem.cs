@@ -8,6 +8,7 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private BallGenerator ballGenerator = default;
     [SerializeField] private List<Ball> removeBalls = new List<Ball>();
     [SerializeField] private Text scoreText = default;
+    [SerializeField] private GameObject pointEffectPrefab = default;
 
     private Ball currentDraggingBall;
     private bool isDragging;
@@ -109,7 +110,7 @@ public class GameSystem : MonoBehaviour
         }
     }
 
-    private void ExplodeBalls(IEnumerable<Ball> balls)
+    private void ExplodeBalls(IEnumerable<Ball> balls, bool withEffect = true)
     {
         int count = default;
         foreach (Ball ball in balls)
@@ -118,7 +119,11 @@ public class GameSystem : MonoBehaviour
             count++;
         }
         StartCoroutine(ballGenerator.Spawns(count));
-        AddScore(count * ParamsSO.Entity.scorePoint);
+
+        if (withEffect)
+        {
+            UpdateScoreWithEffect(balls.Last().transform.position, count);
+        }
     }
 
     private void ExplodeBomb(Ball bomb)
@@ -135,6 +140,24 @@ public class GameSystem : MonoBehaviour
                 explosionList.Add(ball);
             }
         }
-        ExplodeBalls(explosionList);
+
+        // Withoud effect. Effect raise from bomb
+        ExplodeBalls(explosionList, false);
+        UpdateScoreWithEffect(bomb.transform.position, explosionList.Count());
+    }
+
+    private void UpdateScoreWithEffect(Vector2 effectPos, int ballCount)
+    {
+        Debug.Log(ballCount);
+        int adding = ballCount * ParamsSO.Entity.scorePoint;
+
+        GameObject effectObj = Instantiate(
+            pointEffectPrefab, effectPos, Quaternion.identity);
+        PointEffect pointEffect = effectObj.GetComponent<PointEffect>();
+        pointEffect.Show(adding);
+        Destroy(effectObj, ParamsSO.Entity.pointEffectRemain);
+
+        score += adding;
+        scoreText.text = score.ToString();
     }
 }

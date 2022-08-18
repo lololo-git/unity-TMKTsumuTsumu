@@ -38,7 +38,8 @@ public class Ball : MonoBehaviour
     public void Explode()
     {
         Destroy(gameObject);
-        GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
+        GameObject explosion = Instantiate(
+            explosionPrefab, transform.position, transform.rotation);
         Destroy(explosion, ParamsSO.Entity.explosionRemain);
     }
 }

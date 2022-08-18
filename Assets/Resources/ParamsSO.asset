@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initBallCount: 40
   scorePoint: 100
-  ballDistance: 2.4
+  ballDistance: 2.3
   defaultBallScale: 2
   activeBallScale: 2.4
+  pointEffectRemain: 0.5
   explosionRemain: 0.12
   bombRatio: 0.05
   BombExplosionRadius: 2
