@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameSystem : MonoBehaviour
@@ -11,7 +12,9 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private Text scoreText = default;
     [SerializeField] private GameObject pointEffectPrefab = default;
     [SerializeField] private Text timerText = default;
+    [SerializeField] private GameObject ResultPanel = default;
 
+    private bool isGameOver;
     private Ball currentDraggingBall;
     private bool isDragging;
     private int score;
@@ -19,6 +22,7 @@ public class GameSystem : MonoBehaviour
 
     private void Start()
     {
+        isGameOver = false;
         score = 0;
         timeCount = ParamsSO.Entity.TimeLimit;
         StartCoroutine(ballGenerator.Spawns(ParamsSO.Entity.initBallCount));
@@ -27,6 +31,10 @@ public class GameSystem : MonoBehaviour
 
     private void Update()
     {
+        if (isGameOver)
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             OnDragBegin();
@@ -97,6 +105,8 @@ public class GameSystem : MonoBehaviour
             timeCount--;
             timerText.text = "Time: " + timeCount.ToString();
         }
+        isGameOver = true;
+        ResultPanel.SetActive(true);
     }
 
     private void AddScore(int point)
@@ -172,5 +182,10 @@ public class GameSystem : MonoBehaviour
 
         score += adding;
         scoreText.text = score.ToString();
+    }
+
+    public void OnRetryButton()
+    {
+        SceneManager.LoadScene("Main");
     }
 }
