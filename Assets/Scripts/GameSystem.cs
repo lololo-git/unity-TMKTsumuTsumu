@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,15 +10,19 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private List<Ball> removeBalls = new List<Ball>();
     [SerializeField] private Text scoreText = default;
     [SerializeField] private GameObject pointEffectPrefab = default;
+    [SerializeField] private Text timerText = default;
 
     private Ball currentDraggingBall;
     private bool isDragging;
     private int score;
+    private int timeCount;
 
     private void Start()
     {
         score = 0;
+        timeCount = ParamsSO.Entity.TimeLimit;
         StartCoroutine(ballGenerator.Spawns(ParamsSO.Entity.initBallCount));
+        StartCoroutine(CountDown());
     }
 
     private void Update()
@@ -82,6 +87,16 @@ public class GameSystem : MonoBehaviour
         removeBalls.Clear();
 
         isDragging = false;
+    }
+
+    private IEnumerator CountDown()
+    {
+        while (timeCount > 0)
+        {
+            yield return new WaitForSeconds(1);
+            timeCount--;
+            timerText.text = "Time: " + timeCount.ToString();
+        }
     }
 
     private void AddScore(int point)

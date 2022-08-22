@@ -32,6 +32,9 @@ public class ParamsSO : ScriptableObject
     [Range(0.5f, 3.0f)]
     public float BombExplosionRadius;
 
+    [Header("制限時間")]
+    public int TimeLimit;
+
     //Scripts for easy loading
 
     //MyScriptableObjectが保存してある場所のパス
