@@ -148,14 +148,12 @@ public class GameSystem : MonoBehaviour
 
     private void UpdateScoreWithEffect(Vector2 effectPos, int ballCount)
     {
-        Debug.Log(ballCount);
         int adding = ballCount * ParamsSO.Entity.scorePoint;
 
         GameObject effectObj = Instantiate(
             pointEffectPrefab, effectPos, Quaternion.identity);
         PointEffect pointEffect = effectObj.GetComponent<PointEffect>();
         pointEffect.Show(adding);
-        Destroy(effectObj, ParamsSO.Entity.pointEffectRemain);
 
         score += adding;
         scoreText.text = score.ToString();
