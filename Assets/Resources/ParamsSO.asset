@@ -21,4 +21,4 @@ MonoBehaviour:
   explosionRemain: 0.12
   bombRatio: 0.05
   BombExplosionRadius: 2
-  TimeLimit: 5
+  TimeLimit: 30
