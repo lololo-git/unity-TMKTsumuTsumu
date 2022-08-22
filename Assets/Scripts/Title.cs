@@ -5,7 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
-    //[SerializeField]
+    private void Start()
+    {
+        SoundManager.instance.PlayBGM(SoundManager.BGM.Title);
+    }
 
     public void OnStartButton()
     {

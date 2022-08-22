@@ -22,6 +22,7 @@ public class GameSystem : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.instance.PlayBGM(SoundManager.BGM.Main);
         isGameOver = false;
         score = 0;
         timeCount = ParamsSO.Entity.TimeLimit;
@@ -130,6 +131,7 @@ public class GameSystem : MonoBehaviour
         currentDraggingBall = ball;
         if (removeBalls.Contains(ball) == false)
         {
+            SoundManager.instance.PlaySE(SoundManager.SE.Touch);
             removeBalls.Add(ball);
             ball.Activate();
         }
@@ -144,6 +146,7 @@ public class GameSystem : MonoBehaviour
             count++;
         }
         StartCoroutine(ballGenerator.Spawns(count));
+        SoundManager.instance.PlaySE(SoundManager.SE.Destroy);
 
         if (withEffect)
         {
